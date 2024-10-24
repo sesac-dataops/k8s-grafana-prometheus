@@ -1,0 +1,30 @@
+services:
+  prometheus:
+    build:
+      context: prometheus
+      args:
+        PORT: 9090
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prom_data:/prometheus
+
+  grafana:
+    build:
+      context: grafana
+      args:
+        USER: admin
+        PASSWORD: admin
+        PORT: 3000
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/datasources
+
+volumes:
+  prom_data:
